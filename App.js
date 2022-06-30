@@ -1,12 +1,7 @@
-
-import SignedInStack from './screens/Navigation';
-
+import SignedInStack from './Navigation';
 
 export default function App() {
   return (
     <SignedInStack></SignedInStack>
   );
 }
-
-
-

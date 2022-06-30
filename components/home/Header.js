@@ -1,14 +1,17 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import React from 'react';
+import { useNavigation } from '@react-navigation/native';
 
 const Header = () => {
+    const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
         <TouchableOpacity>
             <Image style={styles.logo} source={require('../../assets/header-logo.png')}></Image>
         </TouchableOpacity>
         <View style={styles.iconContainers}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => {navigation.navigate('NewPostScreen')}}>
                 <Image style={styles.icon} source={{uri: 'https://img.icons8.com/fluency-systems-regular/60/ffffff/plus-2-math.png'}}></Image>
             </TouchableOpacity>
             <TouchableOpacity>

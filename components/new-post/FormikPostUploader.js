@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import { Divider } from 'react-native-elements';
+import { useNavigation } from '@react-navigation/native';
+import validUrl from 'valid-url';
 
 const uploadPostSchema = Yup.object().shape({
     imageUrl: Yup.string().url().required('A URL is required'),
@@ -13,15 +15,23 @@ const PLACEHOLDER_IMAGE ='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKsAAACA
 
 const FormikPostUploader = () => {
     const [thumbnailUrl, setThumbnailUrl] = useState(PLACEHOLDER_IMAGE);
-
-
+    const navigation = useNavigation();
 
   return (
-    <Formik initialValues={{caption: '', imageUrl: ''}} onSubmit={(values) => {console.log(values)}} validationSchema={uploadPostSchema} validateOnMount={true}>
+    <Formik 
+        initialValues={{caption: '', imageUrl: ''}} 
+        onSubmit={(values) => {
+            console.log(values);
+            console.log('Your post was submitted successfully');
+            navigation.goBack();
+        }} 
+        validationSchema={uploadPostSchema} 
+        validateOnMount={true}
+    >
         {({handleBlur, handleChange, handleSubmit, values, errors, isValid}) => (
             <View>
                 <View style={{margin: 20, justifyContent: 'space-between', flexDirection: 'row'}}>
-                    <Image style={{width: 100, height: 100}} source={{uri: thumbnailUrl ? thumbnailUrl : PLACEHOLDER_IMAGE}}></Image>
+                    <Image style={{width: 100, height: 100}} source={{uri: validUrl.isUri(thumbnailUrl) ? thumbnailUrl : PLACEHOLDER_IMAGE}}></Image>
                     <View style={{flex: 1, marginLeft: 12}}>
                         <TextInput multiline={true} style={{color: 'white', fontSize: 20}} onChangeText={handleChange('caption')} onBlur={handleBlur('caption')} value={values.caption} placeholder='Write a Caption...' placeholderTextColor='gray'></TextInput>
                     </View>
